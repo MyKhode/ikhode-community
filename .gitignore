@@ -1,0 +1,47 @@
+# Laravel default
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+.env
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+
+# Laravel IDE helper (optional, if using barryvdh/laravel-ide-helper)
+/_ide_helper.php
+/_ide_helper_models.php
+
+# Laravel Telescope
+storage/telescope
+
+# Laravel Horizon
+horizon.json
+
+# Laravel Livewire temporary files
+livewire-tmp
+
+# Compiled files & logs
+/storage/app/public
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/testing
+/storage/framework/views
+/storage/logs
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDEs
+/.vscode
+.idea
+*.sublime-workspace
+*.sublime-project
+
+# Other
+.env.backup
+.env.local
+.env.testing
