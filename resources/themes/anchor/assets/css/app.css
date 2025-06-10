@@ -1,8 +1,9 @@
 @import './component-styles.css';
+@import url('https://fonts.googleapis.com/css2?family=Koulen&family=Moulpali&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 [x-cloak]{
   display:none;
 }

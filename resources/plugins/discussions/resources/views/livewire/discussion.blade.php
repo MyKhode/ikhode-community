@@ -1,5 +1,6 @@
-<div class="{{ config('discussions.styles.container_classes') }}">
+<div x-data="{ sidebarOpen: false }" class="{{ config('discussions.styles.container_classes') }}">
     @include('discussions::partials.custom-styles')
+    
     <discussion-content-top>
         <div class="relative mb-5 space-y-2">
             <h1 class="{{ config('discussions.styles.header_classes') }}">{{ $this->discussion->title }}</h1>
@@ -17,9 +18,21 @@
             @endif
         </div>
     </discussion-content-top>
-    <div class="flex items-start w-full space-x-5">
 
-        <discussion-content-left class="relative w-full">
+    <!-- Mobile Sidebar Toggle Button -->
+    <div class="md:hidden mb-4">
+        <button @click="sidebarOpen = true" class="px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded">
+            Discussion Post Sidebar 
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+    </div>
+
+    <div class="flex flex-col md:flex-row items-start w-full space-x-0 md:space-x-5">
+
+        <!-- Left: Main Content -->
+        <discussion-content-left class="relative w-full md:w-2/3">
             <div class="mb-4 space-y-4">
                 @if ($editing)
                     <x-filament::input.wrapper class="w-full !{{ config('discussions.styles.rounded') }}">
@@ -38,34 +51,27 @@
                 <div class="p-5 bg-white dark:bg-white/5 border border-neutral-200 dark:border-gray-700 @if (config('discussions.styles.rounded') == 'rounded-full') {{ 'rounded-xl' }}@else{{ config('discussions.styles.rounded') }} @endif">
                     <div class="flex items-center mb-5 space-x-2">
                         <a href="{{ $this->discussion->user->profile_url }}" class="flex items-center space-x-2 text-sm font-bold group">
-                            @include('discussions::partials.discussion-avatar', [
-                            'user' => $this->discussion->user,
-                            'size' => 'sm',
-                            ])
-                            <span class="text-gray-900 group group-hover:underline dark:text-gray-100">{{ $this->discussion->user->name }}</span>
+                            @include('discussions::partials.discussion-avatar', ['user' => $this->discussion->user, 'size' => 'sm'])
+                            <span class="text-gray-900 group-hover:underline dark:text-gray-100">{{ $this->discussion->user->name }}</span>
                         </a>
-                        <p class="text-xs text-gray-500">on {{ $this->discussion->created_at->format('F jS, Y') }}
-                        </p>
+                        <p class="text-xs text-gray-500">on {{ $this->discussion->created_at->format('F jS, Y') }}</p>
                     </div>
-                    <dicussion-post class="mb-2 prose-sm prose dark:prose-invert">
+                    <discussion-post class="mb-2 prose-sm prose dark:prose-invert">
                         {!! Str::markdown($this->discussion->content) !!}
                     </discussion-post>
-                        @auth
-                            <div class="flex justify-end mr-auto space-x-2 text-sm">
-                                {{-- <button wire:click="reportDiscussion" class="font-medium text-neutral-500 hover:text-orange-400 hover:underline">@lang('discussions::messages.words.report')</button> --}}
-                                @if (auth()->user()->id == $this->discussion->user_id)
-                                    <button wire:click="editDiscussion" class="font-medium text-neutral-500 hover:text-blue-500 hover:underline">@lang('discussions::messages.words.edit')</button>
-                                    <x-filament::modal id="delete-modal">
-                                        <x-slot name="trigger">
-                                            <button class="font-medium text-neutral-500 hover:text-red-500 hover:underline">@lang('discussions::messages.words.delete')</button>
-                                        </x-slot>
-                                        
-                                        @include('discussions::partials.delete-modal-content', ['type' => 'discussion'])
-                                    </x-filament::modal>
-                                
-                                @endif
-                            </div>
-                        @endauth
+                    @auth
+                        <div class="flex justify-end mr-auto space-x-2 text-sm">
+                            @if (auth()->user()->id == $this->discussion->user_id)
+                                <button wire:click="editDiscussion" class="font-medium text-neutral-500 hover:text-blue-500 hover:underline">@lang('discussions::messages.words.edit')</button>
+                                <x-filament::modal id="delete-modal">
+                                    <x-slot name="trigger">
+                                        <button class="font-medium text-neutral-500 hover:text-red-500 hover:underline">@lang('discussions::messages.words.delete')</button>
+                                    </x-slot>
+                                    @include('discussions::partials.delete-modal-content', ['type' => 'discussion'])
+                                </x-filament::modal>
+                            @endif
+                        </div>
+                    @endauth
                 </div>
                 @endif
             </div>
@@ -73,61 +79,39 @@
             @livewire('discussion-posts', ['discussion' => $this->discussion], key($this->discussion->id))
 
             <div class="flex flex-col items-end mt-4 mb-4 space-y-4">
-                {{-- @auth --}}
-                    <div class="w-full mb-1">
-                        {{ $this->replyForm }}
-                    </div>
-                    <x-button wire:click="answer" class="flex-shrink-0 !{{ config('discussions.styles.rounded') }}">@lang('discussions::messages.words.comment')</x-button>
-                    
-                {{-- @endif --}}
+                <div class="w-full mb-1">
+                    {{ $this->replyForm }}
+                </div>
+                <x-button wire:click="answer" class="flex-shrink-0 !{{ config('discussions.styles.rounded') }}">@lang('discussions::messages.words.comment')</x-button>
             </div>
         </discussion-content-left>
 
-        <discussion-content-right class="{{ config('discussions.styles.sidebar_width') }} flex-shrink-0 text-sm ml-8">
-            <h3 class="font-semibold text-neutral-500 dark:text-gray-400">Category</h3>
-            @if(is_null($this->discussion->category_slug))
-                <p class="w-full my-4 text-xs text-gray-500 rounded-md dark:text-gray-400">{{ trans('discussions::messages.discussion.no_category') }}</p>
-            @else
-                <p class="my-2 text-xs text-gray-500 dark:text-gray-400">
-                    {{ Wave\Plugins\Discussions\Helpers\Category::name($this->discussion->category_slug) }}
-                </p>
-            @endif
-            <hr class="border-gray-200 dark:border-gray-700" />
-            <h3 class="mt-5 font-semibold text-neutral-500 dark:text-gray-400">Participants</h3>
-            
-            <div class="my-2 space-y-1.5">
-                @forelse ($this->discussion->users()->get() as $user)
-                    <a href="{{ $user->link() }}" class="flex items-center space-x-2 font-medium text-gray-700 dark:text-gray-200 hover:underline">
-                        @include('discussions::partials.discussion-avatar', [
-                            'user' => $user,
-                            'size' => 'xs',
-                            ])
-                        <span>{{ $user->name }}</span>
-                    </a>
-                @empty
-                    <p class="w-full my-4 text-xs text-gray-400 rounded-md">{{ trans('discussions::messages.discussion.no_participants') }}</p>
-                @endforelse
-            </div>
-            <hr class="border-gray-200 dark:border-gray-700" />
-            @auth
-                <h3 class="mt-5 font-semibold text-neutral-500 dark:text-gray-400">Notifications</h3>
-                <div class="relative w-auto h-full my-2">
-                    @if ($user_subscribed)
-                        <x-button color="success" icon="phosphor-bell-ringing" x-on:click="$dispatch('toggleNotification')" class="flex-shrink-0 w-full flex items-center justify-center !{{ config('discussions.styles.rounded') }}">
-                            <span>Subscribed</span>
-                        </x-button>
-                    @else
-                        <x-button color="gray" icon="phosphor-bell" x-on:click="$dispatch('toggleNotification')" class="flex-shrink-0 w-full flex items-center justify-center !{{ config('discussions.styles.rounded') }}">
-                            <span>Subscribe</span>
-                        </x-button>
-                    @endif
-                </div>
-                @if ($user_subscribed)
-                    <p>You're receiving notifications because you're subscribed to this thread.</p>
-                @else
-                    <p>You are not recieving notifications about this discussion</p>
-                @endif
-            @endauth
+        <!-- Right: Sidebar -->
+        <discussion-content-right class="{{ config('discussions.styles.sidebar_width') }} hidden md:block flex-shrink-0 text-sm ml-0 md:ml-8">
+            @include('discussions::partials.sidebar')
         </discussion-content-right>
     </div>
+
+    <!-- Mobile Sidebar Overlay with click-away behavior -->
+    <div
+        x-show="sidebarOpen"
+        class="fixed inset-0 z-50 flex justify-end md:hidden bg-black bg-opacity-50"
+        @click="sidebarOpen = false"
+        style="display: none;"
+    >
+        <div
+            class="w-3/4 h-full bg-white dark:bg-gray-900 p-4 overflow-y-auto shadow-lg"
+            @click.stop
+        >
+            <button @click="sidebarOpen = false" type="button" class="inline-flex bg-gray-100 justify-center items-center p-1 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <span class="sr-only">Close</span>
+                <!-- Heroicon name: outline/x -->
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            @include('discussions::partials.sidebar')
+        </div>
+    </div>
+
 </div>
