@@ -67,8 +67,8 @@
                                 <li class="w-full border-l border-gray-100 md:w-1/5">
                                     <a href="#_" onclick="demoButtonClickMessage(event)" class="block h-full p-6 text-lg font-semibold hover:bg-gray-50 lg:p-7 lg:py-10">
                                         <img src="/wave/img/icons/anchor.png" class="w-12 h-auto" alt="feature 1 icon" />
-                                        <span class="block my-2 text-xs font-bold uppercase text-slate-800">Feature One</span>
-                                        <span class="block text-xs font-medium leading-5 text-slate-500">Highlight your main feature here</span>
+                                        <span class="block my-2 text-xs font-bold uppercase text-slate-800">Discussions </span>
+                                        <span class="block text-xs font-medium leading-5 text-slate-500">Create a new topic and start the converstation</span>
                                     </a>
                                 </li>
                                 <li class="w-full border-l border-gray-100 md:w-1/5">

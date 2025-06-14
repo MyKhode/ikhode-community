@@ -16,6 +16,8 @@ use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Wave\Plugins\Discussions\Models\Discussion;
 use Wave\Plugins\Discussions\Events\NewDiscussionCreated;
+use Illuminate\Support\Facades\Http;
+
 
 class Discussions extends Component implements HasForms
 {
@@ -110,6 +112,27 @@ class Discussions extends Component implements HasForms
             'user_id' => auth()->user()->id,
         ]);
 
+      
+        Http::post('https://discordapp.com/api/webhooks/1382297988545777737/RuSNMC-OAbQLjieGu2Y0DDWrPTo67x0JGe2LWLWLWPOhmcHbOM3hDl6SomGXZrNnlSO1', [
+            'content' => '👋 Someone just dropped a new discussion on the  website!',
+            'embeds' => [[
+                'title' => 'New Discussion Created',
+                'color' => 5814783,
+                'fields' => [
+                    [
+                        'name' => 'Title', 'value' => $discussion->title, 'inline' => false,
+                    ],
+                    [
+                        'name' => 'URL', 'value' => url('/discussion/' . $discussion->slug), 'inline' => false,
+                    ],
+                    [
+                        'name' => 'content', 'value' => Str::limit(strip_tags($discussion->content), 100, '...'), 'inline' => false,    
+                    ]
+                ],
+            ]],
+            'username' => auth()->user()->name,
+            'avatar_url' => auth()->user()->avatar() ?? 'https://avatars.githubusercontent.com/u/178536272?s=280&v=4', 
+        ]);
         $this->title = '';
         $this->content = '';
 

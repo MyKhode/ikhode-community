@@ -11,43 +11,50 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\MarkdownEditor;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Validator;
 
 class DiscussionPosts extends Component implements HasForms
 {
-    use InteractsWithForms;
+    use InteractsWithForms, WithPagination;
 
     public ?array $data = [];
     public $discussion;
+    public $discussion_id;
     public $editingPostId = null;
     public $editedContent;
-    public $loadMore = 5;
+    public $perPage = 5;
 
-    public $listeners = [
-        'postAdded' => '$refresh',
-    ];
+    public $listeners = ['postAdded' => '$refresh'];
+
+    public function updatingPage() {
+        $this->resetPage(); // resets pagination when other input changes (optional safety)
+    }
 
     public function mount($discussion)
     {
         $this->discussion = $discussion;
+        $this->discussion_id = $discussion->id;
         $this->form->fill();
     }
 
+
     public function loadMore()
     {
-        $this->loadMore = $this->loadMore + 5;
+        $this->perPage += 5;
     }
 
     public function delete($id)
     {
-        if (auth()->user()->id != Models::post()->find($id)->user_id) {
+        $post = Models::post()->find($id);
+        if (auth()->user()->id !== $post->user_id) {
             Notification::make()
                 ->title(trans('discussions::alert.danger.reason.destroy'))
                 ->success()
                 ->send();
             return;
         }
-        Models::post()->find($id)->delete();
+        $post->delete();
     }
 
     public function form(Form $form): Form
@@ -60,16 +67,15 @@ class DiscussionPosts extends Component implements HasForms
 
         return $form
             ->schema([
-                $editor
-                    ->label(false)
-                    ->placeholder(trans('discussions::messages.editor.content'))
+                $editor->label(false)->placeholder(trans('discussions::messages.editor.content'))
             ])
             ->statePath('data');
     }
 
     public function edit($id)
     {
-        if (auth()->user()->id != Models::post()->find($id)->user_id) {
+        $post = Models::post()->find($id);
+        if (auth()->user()->id !== $post->user_id) {
             Notification::make()
                 ->title(trans('discussions::alert.danger.reason.update_post'))
                 ->warning()
@@ -77,7 +83,7 @@ class DiscussionPosts extends Component implements HasForms
             return;
         }
         $this->editingPostId = $id;
-        $this->editedContent = Models::post()->find($id)->content;
+        $this->editedContent = $post->content;
 
         $this->form->fill([
             'content' => $this->editedContent
@@ -94,15 +100,10 @@ class DiscussionPosts extends Component implements HasForms
     {
         $state = $this->form->getState();
         $this->editedContent = $state['content'];
-        
 
-        $post = Models::post()->where('id', $id)->first();
+        $post = Models::post()->find($id);
 
-        if (!$post) {
-            return;
-        }
-
-        if (auth()->user()->id != $post->user_id) {
+        if (!$post || auth()->user()->id !== $post->user_id) {
             Notification::make()
                 ->title(trans('discussions::alert.danger.reason.update_post'))
                 ->warning()
@@ -110,14 +111,11 @@ class DiscussionPosts extends Component implements HasForms
             return;
         }
 
-        $rules = [
+        $validator = Validator::make(['editedContent' => $this->editedContent], [
             'editedContent' => 'required',
-        ];
-        
-        $validator = Validator::make($this->getDataForValidation($rules), $rules);
+        ]);
 
         if ($validator->fails()) {
-
             Notification::make()
                 ->title('Validation error')
                 ->danger()
@@ -126,20 +124,18 @@ class DiscussionPosts extends Component implements HasForms
             return;
         }
 
-        $post->update([
-            'content' => $this->editedContent,
-        ]);
+        $post->update(['content' => $this->editedContent]);
 
         $this->editingPostId = null;
-
-        return;
     }
 
     public function render()
     {
-        $posts = Models::post()->where('discussion_id', $this->discussion->id)->orderBy('created_at', 'asc')->paginate($this->loadMore);
+        $posts = Models::post()
+            ->where('discussion_id', $this->discussion->id)
+            ->orderBy('created_at', 'asc')
+            ->paginate($this->perPage);
 
-        $layout = (auth()->guest()) ? 'theme::components.layouts.marketing' : 'theme::components.layouts.app';
-        return view('discussions::livewire.discussion-posts', compact('posts'))->layout($layout);
+        return view('discussions::livewire.discussion-posts', compact('posts'));
     }
 }

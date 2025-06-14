@@ -111,6 +111,51 @@ return [
             'icon' => '🙌',
             'title' => 'Show and tell',
             'description' => 'Show off something you\'ve made',
+        ],
+        'game-development'=> [
+            'icon'=> '🎮',
+            'title'=> 'Game Development',
+            'description'=> 'Discuss game development topics',
+        ],
+        'blender' => [
+            'icon' => '🌀',
+            'title' => 'Blender Help',
+            'description' => 'Get help with Blender',
+        ],
+        'unity'=> [
+            'icon'=> '🛠️',
+            'title'=> 'Unity Help',
+            'description'=> 'Get help with Unity',
+        ],
+        'career'=> [
+            'icon' => '💼',
+            'title' => 'Career Advice',
+            'description' => 'Discuss career-related topics',
+        ],
+        'packages' => [
+            'icon' => '📦',
+            'title' => 'Packages',
+            'description' => 'Discuss packages and libraries',
+        ],
+        'swift' => [
+            'icon' => '🕊️ ',
+            'title' => 'Swift Programming',
+            'description' => 'Discuss Swift programming language',
+        ],
+        'api-and-webhooks'=> [
+            'icon'=> '🔗',
+            'title' => 'API and Webhooks',
+            'description' => 'Discuss API and Webhooks integration',
+        ],
+        'discover'=> [
+            'icon'=> '🔍',
+            'title'=> 'Discover',
+            'description'=> 'Discover new things',
+        ],
+        'programming-help'=> [
+            'icon'=> '🧑‍💻',
+            'title'=> 'Programming Help',
+            'description'=> 'Get help with programming issues',
         ]
     ],
 ];

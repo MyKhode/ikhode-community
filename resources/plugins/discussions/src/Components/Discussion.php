@@ -16,6 +16,11 @@ use Validator;
 use Wave\Plugins\Discussions\Models\Models;
 use Wave\Plugins\Discussions\Events\NewDiscussionPostCreated;
 
+use App\Models\User;
+use App\Notifications\TestNotification;
+
+use Illuminate\Support\Facades\Http;
+
 class Discussion extends Component implements HasForms
 {
     use InteractsWithForms;
@@ -128,6 +133,52 @@ class Discussion extends Component implements HasForms
         ]);
 
         event(new NewDiscussionPostCreated($post));
+
+        // Notify all participants except current user
+        $participantIds = $this->discussion->posts()
+            ->pluck('user_id')
+            ->unique()
+            ->reject(fn ($id) => $id == auth()->id());
+
+        $participants = User::whereIn('id', $participantIds)->get();
+
+        foreach ($participants as $participant) {
+            $participant->notify(new TestNotification([
+                'icon' => '/storage/demo/default.png',
+                'body' => auth()->user()->name . ' replied to a discussion you participated in.',
+                'link' => '/discussion/' . $this->discussion->slug,
+                'user' => ['name' => auth()->user()->name],
+            ]));
+        }
+
+        // Discord webhook for replies (new comment/answer to a discussion)
+        Http::post('https://discordapp.com/api/webhooks/1382308696880582676/6V4jpqQO2Mwf0UAhjMjlvfI_uPwHCa8RATh_PzqxPVsU_DuJZYZ4rvvg733Ac-Rc3Lwa', [
+            'content' => '💬 Someone just replied to a discussion on https://ikhode.com!',
+            'embeds' => [[
+                'title' => 'New Reply',
+                'color' => 3447003,
+                'fields' => [
+                    [
+                        'name' => 'Discussion Title: ' . $this->discussion->title,
+                        'value' => '',
+                        'inline' => false,
+                    ],
+                    [
+                        'name' => 'URL: ' . url('/discussion/' . $this->discussion->slug),
+                        'value' => '',
+                        'inline' => false,
+                    ],
+                    [
+                        'name' => 'Reply Content: ' . Str::limit(strip_tags($this->comment), 100, '...'),
+                        'value' => '',
+                        'inline' => false,
+                    ],
+                ],
+            ]],
+            'username' => auth()->user()->name,
+            'avatar_url' => auth()->user()->avatar() ?? 'https://avatars.githubusercontent.com/u/178536272?s=280&v=4', // Default avatar if none set
+        ]);
+
 
         if ($this->discussion->subscribers->contains(auth()->user()->id) == false) {
             $this->discussion->subscribers()->attach(auth()->user()->id);

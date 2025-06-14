@@ -1,7 +1,7 @@
 <div id="discussion-create"
     x-data="{ open: false }" x-cloak>
 <div x-show="open" class="fixed z-[149] inset-0 w-screen h-screen bg-black/30" x-cloak></div>
-<div 
+<div
     x-show="open"
     x-on:click.outside="open=false"
     x-transition:enter="transition ease-out duration-300"
