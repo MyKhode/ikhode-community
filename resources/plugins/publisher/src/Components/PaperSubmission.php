@@ -54,6 +54,7 @@ class PaperSubmission extends Component implements Forms\Contracts\HasForms
             'user_id' => Auth::id(),
         ]);
 
+
         foreach ($this->researchers as $researcher) {
             PaperResearcher::create([
                 'paper_id' => $paper->id,
