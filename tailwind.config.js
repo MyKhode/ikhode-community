@@ -35,13 +35,7 @@ export default {
                     from: { transform: 'translateX(0)' },
                     to: { transform: 'translateX(-100%)' },
                 }
-            },
-            fontFamily: {
-                sans: ['Inter var', ...defaultTheme.fontFamily.sans],
-                serif: ['Merriweather', ...defaultTheme.fontFamily.serif],
-                mono: ['JetBrains Mono', 'Koulen', 'Moulpali', ...defaultTheme.fontFamily.mono],
-
-            },
+            } 
         },
     },
 
