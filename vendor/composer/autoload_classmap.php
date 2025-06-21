@@ -81,6 +81,7 @@ return array(
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Listeners\\UserRegistered' => $baseDir . '/app/Listeners/UserRegistered.php',
+    'App\\Livewire\\MarkdownX' => $baseDir . '/app/Livewire/MarkdownX.php',
     'App\\Models\\Category' => $baseDir . '/app/Models/Category.php',
     'App\\Models\\Forms' => $baseDir . '/app/Models/Forms.php',
     'App\\Models\\Post' => $baseDir . '/app/Models/Post.php',
