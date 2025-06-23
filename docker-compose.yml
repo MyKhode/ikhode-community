@@ -17,7 +17,11 @@ services:
       DB_PORT: 4987           # Default MySQL port
       DB_USER: root           # Database user, adjust as necessary
       DB_PASSWORD: ikhode  # Database password, adjust as necessary
-      DB_NAME: community   
+      DB_NAME: community  
+      APP_DEBUG: true
+      APP_URL: https://community.ikhode.com
+      ASSET_URL: https://community.ikhode.com 
+      APP_ENV: production
 
 networks:
   wave_network:

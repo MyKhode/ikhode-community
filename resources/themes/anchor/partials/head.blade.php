@@ -29,6 +29,7 @@
     <meta itemprop="name" content="{{ $seo->title }}">
     <meta itemprop="description" content="{{ $seo->description }}">
     <meta itemprop="image" content="{{ $seo->image }}">
+    
 
     @if(isset($seo->image_w) && isset($seo->image_h))
         <meta property="og:image:width" content="{{ $seo->image_w }}">

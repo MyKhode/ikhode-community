@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit50da446303eb19148b4a3a26e67e1c45
+class ComposerStaticInit6cb2cc1a84878489037406717b7a23a8
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -1139,7 +1139,6 @@ class ComposerStaticInit50da446303eb19148b4a3a26e67e1c45
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Listeners\\UserRegistered' => __DIR__ . '/../..' . '/app/Listeners/UserRegistered.php',
-        'App\\Livewire\\MarkdownX' => __DIR__ . '/../..' . '/app/Livewire/MarkdownX.php',
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/Models/Category.php',
         'App\\Models\\Forms' => __DIR__ . '/../..' . '/app/Models/Forms.php',
         'App\\Models\\Post' => __DIR__ . '/../..' . '/app/Models/Post.php',
@@ -12518,9 +12517,9 @@ class ComposerStaticInit50da446303eb19148b4a3a26e67e1c45
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit50da446303eb19148b4a3a26e67e1c45::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit50da446303eb19148b4a3a26e67e1c45::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit50da446303eb19148b4a3a26e67e1c45::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6cb2cc1a84878489037406717b7a23a8::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6cb2cc1a84878489037406717b7a23a8::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit6cb2cc1a84878489037406717b7a23a8::$classMap;
 
         }, null, ClassLoader::class);
     }

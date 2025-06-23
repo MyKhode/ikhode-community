@@ -30,7 +30,7 @@
 
                 <x-filament::link
                     color="gray"
-                    href="https://github.com/thedevdojo/wave"
+                    href="https://github.com/Ikhode-Technologies"
                     icon-alias="panels::widgets.filament-info.open-github-button"
                     rel="noopener noreferrer"
                     target="_blank"

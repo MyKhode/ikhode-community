@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '8f335f94110d86b167d6810a77cb09c420b74217',
+        'reference' => '2d65c5074ec2bc3e0821b5652378e4484ec5dc5b',
         'name' => 'devdojo/wave',
         'dev' => true,
     ),
@@ -190,7 +190,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '8f335f94110d86b167d6810a77cb09c420b74217',
+            'reference' => '2d65c5074ec2bc3e0821b5652378e4484ec5dc5b',
             'dev_requirement' => false,
         ),
         'dflydev/dot-access-data' => array(

@@ -25,8 +25,7 @@
 				image="/wave/img/docs.png"
 			/>
 			<x-app.dashboard-card
-				href="https://devdojo.com/questions"
-				target="_blank"
+				href="{{ route('discussions') }}"
 				title="Ask The Community"
 				description="Share your progress and get help from other builders."
 				link_text="Ask a Question"
@@ -36,7 +35,7 @@
 
 		<div class="flex flex-col w-full mt-5 space-y-5 md:flex-row md:space-y-0 md:mb-0 md:space-x-5">
 			<x-app.dashboard-card
-				href="https://github.com/thedevdojo/wave"
+				href="https://github.com/Ikhode-Technologies"
 				target="_blank"
 				title="Github Repo"
 				description="View the source code and submit a Pull Request"
@@ -44,7 +43,7 @@
 				image="/wave/img/laptop.png"
 			/>
 			<x-app.dashboard-card
-				href="https://devdojo.com"
+				href="https://github.com/Ikhode-Technologies"
 				target="_blank"
 				title="Resources"
 				description="View resources that will help you build your SaaS"

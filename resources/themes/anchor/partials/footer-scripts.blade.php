@@ -16,4 +16,9 @@
 
         gtag('config', '{{ setting("site.google_analytics_tracking_id") }}');
     </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&family=Koulen&family=Moulpali&display=swap" rel="stylesheet">
+    
 @endif

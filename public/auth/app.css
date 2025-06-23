@@ -5,3 +5,8 @@
 #auth-container{
   border:0px;
 }
+.koulen-regular {
+  font-family: "Koulen", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}

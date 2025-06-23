@@ -3,50 +3,58 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class TestNotification extends Notification
 {
     use Queueable;
 
-    protected array $data;
-
     /**
      * Create a new notification instance.
-     *
-     * @param array $data
      */
-    public function __construct(array $data = [])
+    public function __construct()
     {
-        $this->data = $data;
+        //
     }
 
     /**
      * Get the notification's delivery channels.
      *
-     * @param mixed $notifiable
-     * @return array
+     * @return array<int, string>
      */
-    public function via($notifiable): array
+    public function via(object $notifiable): array
     {
         return ['database'];
     }
 
     /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable): MailMessage
+    {
+        return (new MailMessage)
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
+    }
+
+    /**
      * Get the array representation of the notification.
      *
-     * @param mixed $notifiable
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($notifiable): array
+    public function toArray($notifiable)
     {
         return [
-            'icon' => $this->data['icon'] ?? '/storage/demo/default.png',
-            'body' => $this->data['body'] ?? 'This is a default notification message.',
-            'link' => $this->data['link'] ?? '/dashboard',
+            'icon' => '/storage/demo/default.png',
+            'body' => 'This is an example, when the user clicks this notification it will go to the link.',
+            'link' => '/dashboard',
             'user' => [
-                'name' => $this->data['user']['name'] ?? 'Unknown User',
-            ],
+                'name' => 'John Doe'
+            ]
         ];
     }
+
 }
