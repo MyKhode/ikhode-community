@@ -10,6 +10,8 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 
+
+
 # Laravel IDE helper (optional, if using barryvdh/laravel-ide-helper)
 /_ide_helper.php
 /_ide_helper_models.php
@@ -45,3 +47,6 @@ Thumbs.db
 .env.backup
 .env.local
 .env.testing
+
+ikhode-community-06007983ecef.json
+storage/app/analytics.json
